@@ -124,6 +124,7 @@ source $ZSH/oh-my-zsh.sh
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
 #setup fzf keybindings and fuzzy completion
+[ -d "$HOME/.fzf/bin" ] && export PATH="$HOME/.fzf/bin:$PATH"
 eval "$(fzf --zsh)"
 
 
