@@ -39,3 +39,14 @@ opt.splitbelow = true -- split horizontal window to the bottom
 opt.swapfile = false
 
 vim.opt.spell = false --disable spellcheck
+
+-- remove the backgrounds set by themes
+vim.api.nvim_create_autocmd("ColorScheme", {
+  callback = function()
+    vim.api.nvim_set_hl(0, "Normal", { bg = "NONE" })
+    vim.api.nvim_set_hl(0, "NormalFloat", { bg = "NONE" })
+    vim.api.nvim_set_hl(0, "SignColumn", { bg = "NONE" })
+    vim.api.nvim_set_hl(0, "LineNr", { bg = "NONE" })
+  end,
+})
+
