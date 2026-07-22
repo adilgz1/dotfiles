@@ -18,7 +18,7 @@ config.colors = {
 	brights = { "#214969", "#E52E2E", "#44FFB1", "#FFE073", "#A277FF", "#a277ff", "#24EAF7", "#24EAF7" },
 }
 
-config.font = wezterm.font('MesloLGS NF', {weight="Regular", stretch='Normal', style='Normal'})
+config.font = wezterm.font('JetBrainsMonoNL Nerd Font', {weight="Regular", stretch='Normal', style='Normal'})
 config.font_size = 13
 
 config.enable_tab_bar = false
