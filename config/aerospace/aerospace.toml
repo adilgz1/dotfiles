@@ -50,7 +50,7 @@ automatically-unhide-macos-hidden-apps = false
 # even when they are invisible.
 # This config option is only available since 'config-version = 2'
 # Fallback value (if you omit the key): persistent-workspaces = []
-persistent-workspaces = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "B", "T", "W"]
+persistent-workspaces = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "B", "T", "W", "M"]
 
 # A callback that runs every time binding mode changes
 # See: https://nikitabobko.github.io/AeroSpace/guide#binding-modes
@@ -84,6 +84,8 @@ outer.right =      5
 # 'main' binding mode must be always presented
 [mode.main.binding]
 
+# See: https://nikitabobko.github.io/AeroSpace/goodies#open-a-new-window-with-applescript
+alt-enter = 'exec-and-forget open -n /Applications/WezTerm.app'
 # All possible keys:
 # - Letters.        a, b, c, ..., z
 # - Numbers.        0, 1, 2, ..., 9
@@ -137,7 +139,8 @@ alt-9 = 'workspace 9'
 alt-b = 'workspace B' #browser
 alt-t = 'workspace T' #terminal
 alt-w = 'workspace W' #work
-
+alt-c = 'workspace C' #communication
+alt-m = 'workspace M' #media
 
 
 # See: https://nikitabobko.github.io/AeroSpace/commands#move-node-to-workspace
@@ -151,13 +154,17 @@ alt-shift-7 = 'move-node-to-workspace 7'
 alt-shift-8 = 'move-node-to-workspace 8'
 alt-shift-9 = 'move-node-to-workspace 9'
 # In your config, you can drop workspace bindings that you don't need
-alt-shift-b = 'workspace B' #browser
-alt-shift-t = 'workspace T' #terminal
-alt-shift-w = 'workspace W' #work
+alt-shift-b = 'move-node-to-workspace B' #browser
+alt-shift-t = 'move-node-to-workspace T' #terminal
+alt-shift-w = 'move-node-to-workspace W' #work
+alt-shift-c = 'move-node-to-workspace C' #communication
+alt-shift-m = 'move-node-to-workspace M' #media
 
 # fullscreen. press again to exit full screen
 alt-shift-f = 'fullscreen'
 
+# toggle focused window to floating
+alt-f = 'layout floating tiling'
 
 # See: https://nikitabobko.github.io/AeroSpace/commands#workspace-back-and-forth
 alt-tab = 'workspace-back-and-forth'
@@ -181,7 +188,31 @@ alt-shift-j = ['join-with down', 'mode main']
 alt-shift-k = ['join-with up', 'mode main']
 alt-shift-l = ['join-with right', 'mode main']
 
-# open wezterm in workspace T
+# open apps in specific workspaces
 [[on-window-detected]]
 if.app-id = 'com.github.wez.wezterm'
-run = "move-node-to-workspace T"
+  run = "move-node-to-workspace T"
+
+[[on-window-detected]]
+if.app-id = 'net.whatsapp.WhatsApp'
+  run = "move-node-to-workspace C"
+
+[[on-window-detected]]
+if.app-id = 'com.apple.MobileSMS'
+  run = "move-node-to-workspace C"
+
+[[on-window-detected]]
+if.app-id = 'com.apple.finder'
+  run = "move-node-to-workspace 1"
+
+[[on-window-detected]]
+if.app-id = 'nl.jknaapen.fladder'
+  run = "move-node-to-workspace M"
+
+
+
+
+
+
+
+
