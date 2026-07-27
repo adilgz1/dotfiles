@@ -136,11 +136,11 @@ alt-7 = 'workspace 7'
 alt-8 = 'workspace 8'
 alt-9 = 'workspace 9'
 # In your config, you can drop workspace bindings that you don't need
-alt-b = 'workspace B' #browser
-alt-t = 'workspace T' #terminal
+alt-b = 'workspace 2' #browser
+alt-t = 'workspace 1' #terminal
 alt-w = 'workspace W' #work
-alt-c = 'workspace C' #communication
-alt-m = 'workspace M' #media
+alt-c = 'workspace 4' #communication
+alt-m = 'workspace 5' #media
 
 
 # See: https://nikitabobko.github.io/AeroSpace/commands#move-node-to-workspace
@@ -154,11 +154,11 @@ alt-shift-7 = 'move-node-to-workspace 7'
 alt-shift-8 = 'move-node-to-workspace 8'
 alt-shift-9 = 'move-node-to-workspace 9'
 # In your config, you can drop workspace bindings that you don't need
-alt-shift-b = 'move-node-to-workspace B' #browser
-alt-shift-t = 'move-node-to-workspace T' #terminal
+alt-shift-b = 'move-node-to-workspace 2' #browser
+alt-shift-t = 'move-node-to-workspace 1' #terminal
 alt-shift-w = 'move-node-to-workspace W' #work
-alt-shift-c = 'move-node-to-workspace C' #communication
-alt-shift-m = 'move-node-to-workspace M' #media
+alt-shift-c = 'move-node-to-workspace 4' #communication
+alt-shift-m = 'move-node-to-workspace 5' #media
 
 # fullscreen. press again to exit full screen
 alt-shift-f = 'fullscreen'
@@ -191,23 +191,23 @@ alt-shift-l = ['join-with right', 'mode main']
 # open apps in specific workspaces
 [[on-window-detected]]
 if.app-id = 'com.github.wez.wezterm'
-  run = "move-node-to-workspace T"
-
-[[on-window-detected]]
-if.app-id = 'net.whatsapp.WhatsApp'
-  run = "move-node-to-workspace C"
-
-[[on-window-detected]]
-if.app-id = 'com.apple.MobileSMS'
-  run = "move-node-to-workspace C"
-
-[[on-window-detected]]
-if.app-id = 'com.apple.finder'
   run = "move-node-to-workspace 1"
 
 [[on-window-detected]]
+if.app-id = 'net.whatsapp.WhatsApp'
+  run = "move-node-to-workspace 4"
+
+[[on-window-detected]]
+if.app-id = 'com.apple.MobileSMS'
+  run = "move-node-to-workspace 4"
+
+[[on-window-detected]]
+if.app-id = 'com.apple.finder'
+  run = "move-node-to-workspace 3"
+
+[[on-window-detected]]
 if.app-id = 'nl.jknaapen.fladder'
-  run = "move-node-to-workspace M"
+  run = "move-node-to-workspace 5"
 
 
 

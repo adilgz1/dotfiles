@@ -6,7 +6,7 @@
                 "parameters": { "basic.to_if_held_down_threshold_milliseconds": 300 },
                 "rules": [
                     {
-                        "description": "tab to right option on hold",
+                        "description": "tab to option on hold",
                         "manipulators": [
                             {
                                 "from": {
@@ -18,7 +18,7 @@
                                     "basic.to_if_held_down_threshold_milliseconds": 0
                                 },
                                 "to_if_alone": [{ "key_code": "tab" }],
-                                "to_if_held_down": [{ "key_code": "right_option" }],
+                                "to_if_held_down": [{ "key_code": "left_option" }],
                                 "type": "basic"
                             }
                         ]
@@ -39,13 +39,14 @@
                         ]
                     },
                     {
-                        "description": "Change right_option+hjkl to arrow keys",
+                        "description": "Change left_option+hjkl to arrow keys",
+                        "enabled": false,
                         "manipulators": [
                             {
                                 "from": {
                                     "key_code": "h",
                                     "modifiers": {
-                                        "mandatory": ["right_option"],
+                                        "mandatory": ["left_option"],
                                         "optional": ["any"]
                                     }
                                 },
@@ -56,7 +57,7 @@
                                 "from": {
                                     "key_code": "j",
                                     "modifiers": {
-                                        "mandatory": ["right_option"],
+                                        "mandatory": ["left_option"],
                                         "optional": ["any"]
                                     }
                                 },
@@ -67,7 +68,7 @@
                                 "from": {
                                     "key_code": "k",
                                     "modifiers": {
-                                        "mandatory": ["right_option"],
+                                        "mandatory": ["left_option"],
                                         "optional": ["any"]
                                     }
                                 },
@@ -78,7 +79,7 @@
                                 "from": {
                                     "key_code": "l",
                                     "modifiers": {
-                                        "mandatory": ["right_option"],
+                                        "mandatory": ["left_option"],
                                         "optional": ["any"]
                                     }
                                 },
