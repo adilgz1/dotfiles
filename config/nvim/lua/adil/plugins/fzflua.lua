@@ -71,6 +71,13 @@ return {
      function() require('fzf-lua').live_grep() end,
      desc = "live grep in current file's directory",
     },
+    {
+     "<leader>fk",
+     mode = {"n"},
+     function() require('fzf-lua').keymaps() end,
+     desc = "search in keybinds",
+    },
+
 
   },
 }
