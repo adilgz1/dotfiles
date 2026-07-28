@@ -55,11 +55,29 @@ symlink_selection() {
         echo "  - $item"
     done
     echo ""
-
-    read -rp "Enter the items you want to symlink (space-separated), or press Enter to skip: " -a chosen
+    #
+    # read -rp "Enter the items you want to symlink (space-separated), or press Enter to skip: " -a chosen
+    #
+    # if [ "${#chosen[@]}" -eq 0 ]; then
+    #     echo "Skipping this section — no items entered."
+    #     return
+    # fi
+    chosen=()
+    if command -v fzf &> /dev/null; then
+        while IFS= read -r line; do
+            chosen+=("$line")
+        done < <(printf '%s\n' "${available[@]}" | fzf --multi \
+            --prompt="$src_dir > " \
+            --header="TAB: toggle selection   ENTER: confirm   ESC: skip section" \
+            --pointer="->" \
+            --marker=">")
+    else
+        echo "(fzf not found — falling back to manual entry. Install fzf for the interactive picker.)"
+        read -rp "Enter the items you want to symlink (space-separated), or press Enter to skip: " -a chosen
+    fi
 
     if [ "${#chosen[@]}" -eq 0 ]; then
-        echo "Skipping this section — no items entered."
+        echo "Skipping this section — no items selected."
         return
     fi
 
