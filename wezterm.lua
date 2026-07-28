@@ -24,7 +24,7 @@ config.enable_tab_bar = false
 
 config.window_decorations = "NONE"
 config.window_background_opacity = 0.6
-config.macos_window_background_blur = 30
+config.macos_window_background_blur = 5
 -- Enable window borders and integrated control buttons
 
 -- and finally, return the configuration to wezterm
