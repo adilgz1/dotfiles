@@ -43,7 +43,9 @@ play = [
 	{ run = "termux-open %s1", desc = "Play", for = "android" },
 	{ run = "mediainfo %s1; echo 'Press enter to exit'; read _", block = true, desc = "Show media info", for = "unix" },
 	{ run = "mediainfo %s1 & pause", block = true, desc = "Show media info", for = "windows" },
+  { run = 'mpv "$@"', orphan = true, desc = "Play with mpv" },
 ]
+
 open = [
 	{ run = "xdg-open %s1",    desc = "Open", for = "linux" },
 	{ run = "open %s",         desc = "Open", for = "macos" },
@@ -86,6 +88,8 @@ rules = [
 	{ mime = "vfs/{absent,stale}", use = "download" },
 	# Fallback
 	{ url = "*", use = [ "open", "reveal" ] },
+  { mime = "video/*", use = "play" },
+  { mime = "audio/*", use = "play" },
 ]
 
 [tasks]
