@@ -3,7 +3,6 @@ local wezterm = require("wezterm")
 
 -- This will hold the configuration.
 local config = wezterm.config_builder()
-
 -- This is where you actually apply your config choices
 
 config.colors = {
@@ -23,7 +22,7 @@ config.font_size = 13
 
 config.enable_tab_bar = false
 
-config.window_decorations = "RESIZE"
+config.window_decorations = "NONE"
 config.window_background_opacity = 0.6
 config.macos_window_background_blur = 30
 -- Enable window borders and integrated control buttons
