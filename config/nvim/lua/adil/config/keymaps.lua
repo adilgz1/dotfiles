@@ -28,8 +28,8 @@ vim.keymap.set("n", "H", ":bprev<CR>", { silent = true })
 vim.keymap.set("n", "L", ":bnext<CR>", { silent = true })
 
 -- go to start/end of line when going to top/bottom of page
-keymap.set("n", "G", "G$", { noremap = true }, {desc = "go to end of file"})
-keymap.set("n", "gg", "gg0", { noremap = true }, {desc = "go to start of file"})
+keymap.set({"n", "v"}, "G", "G$", { noremap = true }, {desc = "go to end of file"})
+keymap.set({"n", "v"}, "gg", "gg0", { noremap = true }, {desc = "go to start of file"})
 
 vim.keymap.set("i", "<C-l>", function()
   local col = vim.api.nvim_win_get_cursor(0)[2]
