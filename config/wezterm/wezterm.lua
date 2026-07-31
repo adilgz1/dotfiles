@@ -18,7 +18,7 @@ config.colors = {
 }
 
 config.font = wezterm.font('JetBrainsMonoNL Nerd Font', {weight="Regular", stretch='Normal', style='Normal'})
-config.font_size = 13
+config.font_size = 15
 
 config.enable_tab_bar = false
 
