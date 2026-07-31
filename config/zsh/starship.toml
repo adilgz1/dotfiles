@@ -1,7 +1,6 @@
 add_newline = false
 
 format = """
-$battery\
 $username\
 $hostname\
 $directory\
@@ -13,32 +12,27 @@ $line_break\
 $character"""
 
 [directory]
-read_only = " "
-
-[battery]
-full_symbol = "•"
-charging_symbol = "⇡"
-discharging_symbol = "⇣"
+read_only = " "
 
 [git_branch]
 format = "[$branch]($style)"
-style = "bright-black"
-
-[git_status]
-format = "[[(*$conflicted$untracked$modified$staged$renamed$deleted)](bright-black) ($ahead_behind$stashed)]($style)"
-style = "cyan"
-conflicted = ""
-untracked = ""
-modified = ""
-staged = ""
-renamed = ""
-deleted = ""
-stashed = "≡"
+style = "bold #7aa2f7"    # blue — branch name
 
 [git_state]
 format = '\([$state( $progress_current/$progress_total)]($style)\) '
-style = "bright-black"
+style = "#e0af68"          # yellow/orange — rebase/merge state
+
+[git_status]
+format = "[[(*$conflicted$untracked$modified$staged$renamed$deleted)]($style) ($ahead_behind$stashed)]($style)"
+style = "#bb9af7"          # purple — status symbols + ahead/behind/stash
+conflicted = "="
+untracked = "?"
+modified = "!"
+staged = "+"
+renamed = "»"
+deleted = "✘"
+stashed = "≡"
 
 [cmd_duration]
 format = "[$duration]($style) "
-style = "yellow"
+style = "#e0af68"          # yellow/orange — command timing

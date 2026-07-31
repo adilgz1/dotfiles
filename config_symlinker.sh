@@ -20,9 +20,9 @@ if [ ! -d "$DOTFILES_DIR" ]; then
     exit 1
 fi
 
-echo "Fetching git submodules..."
-(cd "$DOTFILES_DIR" && git submodule update --init --recursive)
-echo ""
+# echo "Fetching git submodules..."
+# (cd "$DOTFILES_DIR" && git submodule update --init --recursive)
+# echo ""
 
 mkdir -p "$CONFIG_DEST_DIR"
 
