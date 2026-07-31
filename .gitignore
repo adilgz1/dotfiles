@@ -2,3 +2,5 @@
 .DS_Store
 .DS_Store
 oh-my-zsh/cache
+config/nvim/lazy-lock.json
+config/uv/uv-receipt.json
