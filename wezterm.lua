@@ -22,7 +22,13 @@ config.font_size = 13
 
 config.enable_tab_bar = false
 
-config.window_decorations = "RESIZE"
+-- different window decorations behaviour for mac and linux
+if wezterm.target_triple:find("linux") then
+  config.window_decorations = "NONE"
+else
+  config.window_decorations = "RESIZE"
+end
+
 config.window_background_opacity = 0.6
 config.macos_window_background_blur = 5
 -- Enable window borders and integrated control buttons
