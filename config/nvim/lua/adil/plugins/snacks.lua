@@ -14,7 +14,7 @@ return {
             notify = { enabled = false },
             notifier = { 
               enabled = true,
-              timeout = 5000,
+              timeout = 2000,
             },
             -- styles = {
             --     input = {
