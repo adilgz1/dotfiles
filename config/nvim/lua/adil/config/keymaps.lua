@@ -15,6 +15,9 @@ vim.keymap.set("n", "<S-Tab>", "<cmd>bprev<cr>")
 -- exit insert mode with `jk` 
 keymap.set("i", "jk", "<ESC>", {desc = "Exit insert mode with jk"})
 
+-- see snacks notification history
+keymap.set("n", "<leader>m", ":lua require('snacks.notifier').show_history()<CR>" , { noremap = true }, {desc = "notification history"})
+
 -- rebind pgup, pgdn, half pgup, half pgdn so that cursor is centered after
 keymap.set("n", "<C-f>", "<C-f>zz", { noremap = true }, {desc = "page down"})
 keymap.set("n", "<C-b>", "<C-b>zz", { noremap = true }, {desc = "page up"})
