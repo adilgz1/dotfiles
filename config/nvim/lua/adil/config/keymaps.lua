@@ -44,6 +44,9 @@ vim.keymap.set("i", "<C-l>", function()
 end, { silent = true })
 
 
+-- delete buffer
+keymap.set("n", "<leader>bd", ":bd<CR>", { desc = "Close current buffer" })
+
 
 -- clear search highlights
 keymap.set("n", "<leader>nh", ":nohl<CR>", { desc = "Clear search highlights" })
