@@ -13,6 +13,9 @@ alias tree='eza --tree --icons=auto'
 # Reuse ls completions for eza (avoids defining a separate completion function)
 compdef eza=ls
 
+# Lazygit
+alias lg='lazygit'
+
 # Better cat
 alias cat='bat'
 
