@@ -1,0 +1,38 @@
+add_newline = false
+
+format = """
+$username\
+$hostname\
+$directory\
+$git_branch\
+$git_state\
+$git_status\
+$cmd_duration\
+$line_break\
+$character"""
+
+[directory]
+read_only = " "
+
+[git_branch]
+format = "[$branch]($style)"
+style = "bold #7aa2f7"    # blue — branch name
+
+[git_state]
+format = '\([$state( $progress_current/$progress_total)]($style)\) '
+style = "#e0af68"          # yellow/orange — rebase/merge state
+
+[git_status]
+format = "[[(*$conflicted$untracked$modified$staged$renamed$deleted)]($style) ($ahead_behind$stashed)]($style)"
+style = "#bb9af7"          # purple — status symbols + ahead/behind/stash
+conflicted = "="
+untracked = "?"
+modified = "!"
+staged = "+"
+renamed = "»"
+deleted = "✘"
+stashed = "≡"
+
+[cmd_duration]
+format = "[$duration]($style) "
+style = "#e0af68"          # yellow/orange — command timing
