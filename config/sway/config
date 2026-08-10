@@ -1,0 +1,305 @@
+# Sway config — ported from EndeavourOS i3 default config
+# Original i3 source: endeavouros-team/endeavouros-i3wm-setup
+#
+# NOTES ON THIS PORT (read before using):
+# 1. bindcode -> bindsym: i3's X11 keycodes (10-19 for number row) don't map
+#    the same way under Wayland. Switched to bindsym with actual number keys,
+#    which is simpler and layout-independent enough for normal use.
+# 2. --no-startup-id removed everywhere: that flag is an X11 startup-notification
+#    thing and doesn't exist in Sway/Wayland.
+# 3. scrot (X11-only) replaced with grim+slurp.
+# 4. feh (X11-only) replaced with swaybg.
+# 5. xset dpms / xss-lock replaced with swayidle.
+# 6. picom (X11 compositor) removed entirely — Sway composites natively, no
+#    separate compositor process needed.
+# 7. rofi -> wofi (native Wayland launcher). If you have rofi-wayland installed
+#    instead, swap `wofi` calls back to `rofi` — rofi-wayland is a drop-in fork.
+# 8. i3status/i3bar -> waybar (config lives in ~/.config/waybar/)
+# 9. dunst -> mako (Wayland-native notification daemon). If you want to keep
+#    dunst, it *can* run under Wayland via XWayland but mako is the more
+#    "correct" choice here.
+# 10. Scripts referenced from your i3 setup (powermenu, blur-lock,
+#     volume_brightness.sh, empty_workspace, audio-device-switch, power-profiles,
+#     keyhint-2) likely call rofi/i3-specific tools internally. They are NOT
+#     rewritten here — you'll need to open each one and swap any rofi/i3-msg-only
+#     calls for wofi/swaymsg equivalents. Flagged inline below.
+
+### Font
+font pango:JetBrainsMonoNL Nerd Font Medium 12
+
+### Mod key
+set $mod Mod4
+
+### Workspace layout
+workspace_layout default
+
+### Window appearance
+default_border pixel 1
+gaps inner 6
+gaps outer 3
+floating_modifier $mod normal
+
+### Output configuration (single AMD monitor, DP-3 equivalent)
+# Run `swaymsg -t get_outputs` to confirm the actual output name Sway assigns
+# (it may not be literally "DP-3" — Wayland output naming can differ from X11's).
+#
+# Try native 240Hz first:
+output DP-3 resolution 2560x1440@240Hz position 0,0
+#
+# If Sway/wlroots refuses that mode (check with `swaymsg -t get_outputs` — it
+# will list "Modes:" for the output; if 240Hz isn't listed, it won't apply),
+# fall back to whatever your monitor natively advertises, e.g.:
+# output DP-3 resolution 2560x1440@144Hz position 0,0
+#
+# You can also try forcing a custom mode the same way you did in X11:
+# output DP-3 mode 2560x1440@240Hz custom
+# (support for `custom` modes varies by GPU driver/kernel version — amdgpu
+# support has improved a lot, but test this before relying on it.)
+
+### Wallpaper (replaces feh)
+exec_always swaybg -i /home/adilg/projects/wallpapers/wallpaper_kimi.jpg -m fill
+
+# kill any instances of cliphist running and launch new ones
+exec_always bash -c 'pkill -x wl-paste; sleep 0.5; wl-paste --type text --watch cliphist store & wl-paste --type image --watch cliphist store &'
+
+
+# cliphist in wofi
+bindsym $mod+c exec cliphist list | wofi --dmenu | cliphist decode | wl-copy
+
+
+### Idle / lock (replaces xss-lock + your blur-lock script call)
+exec swayidle -w \
+    timeout 480 'swaylock -f' \
+    timeout 600 'swaymsg "output * dpms off"' resume 'swaymsg "output * dpms on"' \
+    before-sleep 'swaylock -f'
+# Your original blur-lock script (~/.config/i3/scripts/blur-lock) likely
+# screenshots the desktop and blurs it via imagemagick/scrot, then feeds it to
+# i3lock. That screenshot step needs to use `grim` instead of `scrot` under
+# Wayland. Swap swaylock -f above for your script once it's ported, e.g.:
+# exec swayidle -w timeout 480 '~/.config/sway/scripts/blur-lock' ...
+bindsym $mod+Shift+Escape exec swaylock -f
+
+### Terminal
+bindsym $mod+Return exec wezterm
+
+### Kill focused window
+bindsym $mod+q kill
+
+### Exit menu
+# Original called a rofi-based powermenu script — point this at a ported
+# version of that script once you've swapped its rofi calls for wofi.
+bindsym $mod+Shift+e exec ~/.config/sway/scripts/powermenu
+
+### Reload / restart
+bindsym $mod+Shift+c reload
+bindsym $mod+Shift+r restart
+
+### Keyboard shortcut helper
+bindsym F1 exec wofi --show drun
+
+### Brightness (needs brightnessctl instead of xbacklight-based scripts)
+bindsym XF86MonBrightnessUp exec brightnessctl set +10% && makoctl set-mode default
+bindsym XF86MonBrightnessDown exec brightnessctl set 10%-
+
+### Focus movement
+bindsym $mod+h focus left
+bindsym $mod+j focus down
+bindsym $mod+k focus up
+bindsym $mod+l focus right
+bindsym $mod+Left focus left
+bindsym $mod+Down focus down
+bindsym $mod+Up focus up
+bindsym $mod+Right focus right
+
+### Move focused window
+bindsym $mod+Shift+h move left
+bindsym $mod+Shift+j move down
+bindsym $mod+Shift+k move up
+bindsym $mod+Shift+l move right
+bindsym $mod+Shift+Left move left
+bindsym $mod+Shift+Down move down
+bindsym $mod+Shift+Up move up
+bindsym $mod+Shift+Right move right
+
+### Split / layout
+bindsym $mod+Shift+v split h
+bindsym $mod+v split v
+bindsym $mod+Shift+f fullscreen toggle
+bindsym $mod+s layout stacking
+bindsym $mod+g layout tabbed
+bindsym $mod+e layout toggle split
+bindsym $mod+f floating toggle
+bindsym $mod+Shift+space focus mode_toggle
+bindsym $mod+a focus parent
+
+### Empty workspace helper
+# Original script likely used i3-msg — swap for swaymsg in the script itself.
+bindsym $mod+Shift+n exec ~/.config/sway/scripts/empty_workspace
+
+### Workspace switching (ported from bindcode $mod+10..19)
+set $ws1 "1:  Terminal"
+set $ws2 "2:  Firefox"
+set $ws3 "3:  Files"
+set $ws4 "4:  Communication"
+set $ws5 "5:  Media"
+set $ws6 "6:  Reading"
+set $ws7 "7"
+set $ws8 "8"
+set $ws9 "9"
+set $ws10 "10"
+
+bindsym $mod+1 workspace $ws1
+bindsym $mod+2 workspace $ws2
+bindsym $mod+3 workspace $ws3
+bindsym $mod+4 workspace $ws4
+bindsym $mod+5 workspace $ws5
+bindsym $mod+6 workspace $ws6
+bindsym $mod+7 workspace $ws7
+bindsym $mod+8 workspace $ws8
+bindsym $mod+9 workspace $ws9
+bindsym $mod+0 workspace $ws10
+
+bindsym $mod+Shift+1 move container to workspace $ws1
+bindsym $mod+Shift+2 move container to workspace $ws2
+bindsym $mod+Shift+3 move container to workspace $ws3
+bindsym $mod+Shift+4 move container to workspace $ws4
+bindsym $mod+Shift+5 move container to workspace $ws5
+bindsym $mod+Shift+6 move container to workspace $ws6
+bindsym $mod+Shift+7 move container to workspace $ws7
+bindsym $mod+Shift+8 move container to workspace $ws8
+bindsym $mod+Shift+9 move container to workspace $ws9
+bindsym $mod+Shift+0 move container to workspace $ws10
+
+bindsym $mod+Tab workspace next
+bindsym $mod+Shift+Tab workspace prev
+
+### Multimedia keys (amixer/playerctl are audio-stack tools, not X11-specific —
+### these work unchanged under Wayland as long as PulseAudio/PipeWire is running)
+bindsym XF86AudioRaiseVolume exec amixer -D pulse sset Master 5%+ && makoctl set-mode default
+bindsym XF86AudioLowerVolume exec amixer -D pulse sset Master 5%- && makoctl set-mode default
+bindsym $mod+XF86AudioRaiseVolume exec amixer -D pulse sset Master 1%+
+bindsym $mod+XF86AudioLowerVolume exec amixer -D pulse sset Master 1%-
+bindsym XF86AudioMute exec amixer sset Master toggle
+bindsym XF86AudioMicMute exec amixer sset Capture toggle
+bindsym XF86AudioPlay exec playerctl play-pause
+bindsym XF86AudioNext exec playerctl next
+bindsym XF86AudioPrev exec playerctl previous
+
+### Audio device switch helper (script — swap any rofi calls inside for wofi)
+bindsym $mod+p exec ~/.config/sway/scripts/audio-device-switch
+
+### App shortcuts
+#bindsym $mod+w exec /usr/bin/firefox
+#bindsym $mod+n exec /usr/bin/thunar
+
+### Screenshots (replaces scrot — scrot cannot capture Wayland surfaces at all)
+bindsym Print exec grim ~/$(date +'%Y-%m-%d-%T')-screenshot.png && notify-send "Screenshot saved"
+bindsym $mod+Print exec grim -g "$(swaymsg -t get_tree | jq -r '.. | select(.focused?) | .rect | "\(.x),\(.y) \(.width)x\(.height)"')" ~/$(date +'%Y-%m-%d-%T')-screenshot.png
+bindsym $mod+Shift+Print exec grim -g "$(slurp)" ~/$(date +'%Y-%m-%d-%T')-screenshot.png && notify-send "Screenshot saved"
+# Note: the focused-window screenshot bind needs `jq` installed:
+# sudo pacman -S jq
+
+### Power profile menu (script — swap rofi calls for wofi inside it)
+bindsym $mod+Shift+p exec ~/.config/sway/scripts/power-profiles
+
+### App launcher (replaces rofi drun)
+bindsym $mod+Space exec wofi --show drun
+bindsym $mod+t exec wofi --show window
+
+
+
+# Resize mode
+mode "resize" {
+    bindsym Left resize shrink width 20px
+    bindsym Down resize grow height 20px
+    bindsym Up resize shrink height 20px
+    bindsym Right resize grow width 20px
+
+    # you can still use h/j/k/l too, since you're used to vim-style movement
+    bindsym h resize shrink width 20px
+    bindsym j resize grow height 20px
+    bindsym k resize shrink height 20px
+    bindsym l resize grow width 20px
+
+    # back to normal: Enter or Escape
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+bindsym $mod+r mode "resize"
+
+### Screenshot with swappy
+bindsym $mod+Shift+s exec grim -g "$(slurp)" - | swappy -f -
+
+### Window -> workspace assignment
+# Sway matches native Wayland apps via app_id, and X11/XWayland apps via class
+# (same [class="..."] syntax i3 uses). Firefox and Thunar run natively under
+# Wayland now, so app_id is more reliable for them if class matching misbehaves.
+assign [app_id="firefox" ] $ws2
+assign [class="(?i)firefox"] $ws2
+assign [app_id="thunar"] $ws3
+assign [class="Thunar"] $ws3
+assign [class="discord"] $ws4
+assign [class="Spotify"] $ws5
+
+for_window [app_id="firefox"] focus
+for_window [class="(?i)firefox"] focus
+for_window [app_id="thunar"] focus
+for_window [class="Thunar"] focus
+
+### Floating rules
+for_window [class="Yad" instance="yad"] floating enable
+for_window [class="Galculator" instance="galculator"] floating enable
+for_window [class="Blueberry.py" instance="blueberry.py"] floating enable
+for_window [class="Xsane" instance="xsane"] floating enable
+for_window [class="Pavucontrol" instance="pavucontrol"] floating enable
+for_window [class="qt5ct" instance="qt5ct"] floating enable
+for_window [class="Bluetooth-sendto" instance="bluetooth-sendto"] floating enable
+for_window [class="Pamac-manager"] floating enable
+for_window [window_role="About"] floating enable
+
+### Colors (unchanged — same syntax works in Sway)
+set $darkbluetrans  #08052be6
+set $darkblue       #08052b
+set $lightblue      #5294e2
+set $urgentred      #e53935
+set $white          #ffffff
+set $black          #000000
+set $purple         #e345ff
+set $darkgrey       #383c4a
+set $grey           #b0b5bd
+set $mediumgrey     #8b8b8b
+set $yellowbrown    #e1b700
+
+client.focused              $lightblue  $darkblue   $white      $mediumgrey $mediumgrey
+client.unfocused            $darkblue   $darkblue   $grey       $darkgrey   $darkgrey
+client.focused_inactive     $darkblue   $darkblue   $grey       $black      $black
+client.urgent               $urgentred  $urgentred  $white      $yellowbrown $yellowbrown
+
+### Autostart
+exec dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=sway
+exec systemctl --user import-environment WAYLAND_DISPLAY XDG_CURRENT_DESKTOP
+
+# xdg autostart — swap "i3" environment tag for "sway"
+exec dex --autostart --environment sway
+
+# Polkit auth agent (same as before — polkit is desktop-agnostic)
+exec /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
+
+# Notification daemon
+exec mako
+
+# Autotiling (autotiling works with Sway too — it speaks the i3ipc protocol,
+# which Sway implements)
+#exec_always autotiling
+
+# xdg-desktop-portal-wlr required for screen sharing to work at all under Wayland
+exec /usr/lib/xdg-desktop-portal-wlr
+
+### Status bar (replaces i3bar + i3status)
+bar {
+    swaybar_command waybar
+}
+
+
+### set cursor
+seat seat0 xcursor_theme "Bibata-Modern-Ice" 20

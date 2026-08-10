@@ -1,0 +1,79 @@
+#!/usr/bin/env bash
+#
+# powermenu - a very simple wofi powermenu
+#
+# Copyright (C) 2025 Johannes Kamprad
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+# needs wofi config:
+# $HOME/.config/wofi/powermenu.css
+# set to be used in sway
+
+WOFI_THEME="${HOME}/.config/wofi/powermenu.css"
+
+# Define possible lock scripts/commands (edit this list as you like)
+LOCK_SCRIPTS=("${HOME}/.config/sway/scripts/blur-lock" "swaylock")
+
+# Find available lock script
+find_lock_script() {
+    for script in "${LOCK_SCRIPTS[@]}"; do
+        # Handle command names vs full paths
+        if [[ "$script" =~ ^[a-zA-Z0-9_-]+$ ]]; then
+            # It's a command name, check if available
+            if command -v "$script" >/dev/null 2>&1; then
+                echo "$script"
+                return 0
+            fi
+        else
+            # It's a path, check if file exists and is executable
+            if [[ -x "$script" ]]; then
+                echo "$script"
+                return 0
+            fi
+        fi
+    done
+    return 1
+}
+
+# Menu entries
+cancel=" Cancel"
+lock="  Lock"
+logout="  Logout"
+reboot="  Reboot"
+shutdown="  Shutdown"
+suspend="  Suspend"
+hibernate="  Hibernate"
+
+# Add lock only if script is found
+if lockcmd="$(find_lock_script)"; then
+    options="$cancel\n$lock\n$logout\n$reboot\n$shutdown\n$suspend\n$hibernate"
+else
+    options="$cancel\n$logout\n$reboot\n$shutdown\n$suspend\n$hibernate"
+fi
+
+chosen="$(echo -e "$options" | wofi --dmenu -i -p "Power Menu" \
+    --style "$WOFI_THEME")"
+
+case $chosen in
+    "$lock")
+        $lockcmd
+        ;;
+    "$cancel"|"")
+        exit 0
+        ;;
+    "$logout")
+        swaymsg exit
+        ;;
+    "$reboot")
+        systemctl reboot
+        ;;
+    "$shutdown")
+        systemctl poweroff
+        ;;
+    "$suspend")
+        systemctl suspend
+        ;;
+    "$hibernate")
+        systemctl hibernate
+        ;;
+esac
