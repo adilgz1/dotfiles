@@ -47,6 +47,11 @@ end, { silent = true })
 -- delete buffer
 keymap.set("n", "<leader>bd", ":bd<CR>", { desc = "Close current buffer" })
 
+-- save
+keymap.set("n", "<leader>ww", ":w<CR>", { desc = "save" })
+
+-- save and quit
+keymap.set("n", "<leader>wq", ":wq<CR>", { desc = "save and quit" })
 
 -- clear search highlights
 keymap.set("n", "<leader>nh", ":nohl<CR>", { desc = "Clear search highlights" })
