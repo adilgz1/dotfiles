@@ -1,4 +1,4 @@
 .DS_Store
 config/nvim/lazy-lock.json
 config/uv/uv-receipt.json
-**/__pycache__/
+**/_pycache__/
