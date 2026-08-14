@@ -16,13 +16,13 @@ vim.keymap.set("n", "<S-Tab>", "<cmd>bprev<cr>")
 keymap.set("i", "jk", "<ESC>", {desc = "Exit insert mode with jk"})
 
 -- see snacks notification history
-keymap.set("n", "<leader>m", ":lua require('snacks.notifier').show_history()<CR>" , { noremap = true }, {desc = "notification history"})
+keymap.set("n", "<leader>m", ":lua require('snacks.notifier').show_history()<CR>", {desc = "notification history"})
 
 -- rebind pgup, pgdn, half pgup, half pgdn so that cursor is centered after
-keymap.set("n", "<C-f>", "<C-f>zz", { noremap = true }, {desc = "page down"})
-keymap.set("n", "<C-b>", "<C-b>zz", { noremap = true }, {desc = "page up"})
-keymap.set("n", "<C-u>", "<C-u>zz", { noremap = true }, {desc = "half page up"})
-keymap.set("n", "<C-d>", "<C-d>zz", { noremap = true }, {desc = "half page down"})
+keymap.set("n", "<C-f>", "<C-f>zz", { noremap = true , desc = "page down"})
+keymap.set("n", "<C-b>", "<C-b>zz", { noremap = true , desc = "page up"})
+keymap.set("n", "<C-u>", "<C-u>zz", { noremap = true , desc = "half page up"})
+keymap.set("n", "<C-d>", "<C-d>zz", { noremap = true , desc = "half page down"})
 
 -- Keep search results centered
 vim.keymap.set('n', 'n', 'nzzzv')
@@ -31,8 +31,8 @@ vim.keymap.set("n", "H", ":bprev<CR>", { silent = true })
 vim.keymap.set("n", "L", ":bnext<CR>", { silent = true })
 
 -- go to start/end of line when going to top/bottom of page
-keymap.set({"n", "v"}, "G", "G$", { noremap = true }, {desc = "go to end of file"})
-keymap.set({"n", "v"}, "gg", "gg0", { noremap = true }, {desc = "go to start of file"})
+keymap.set({"n", "v"}, "G", "G$", { noremap = true , desc = "go to end of file"})
+keymap.set({"n", "v"}, "gg", "gg0", { noremap = true , desc = "go to start of file"})
 
 vim.keymap.set("i", "<C-l>", function()
   local col = vim.api.nvim_win_get_cursor(0)[2]
