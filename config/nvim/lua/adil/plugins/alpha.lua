@@ -15,7 +15,7 @@ return {
       "88    88 88 .88'  88 88  88  88" ,
       "dP    dP 8888P'   dP dP  dP  dP" ,
 
-    } 
+    }
 
     -- Set menu
     dashboard.section.buttons.val = {
