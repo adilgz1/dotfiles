@@ -51,6 +51,7 @@ require("mason-tool-installer").setup({
     "stylua",
     "prettier",
     "rust-analyzer",
+    "texlab",
   },
 })
 
