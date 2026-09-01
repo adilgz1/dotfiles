@@ -4,8 +4,8 @@ return {
   ft = "markdown",
   cmd = { "TableModeToggle", "TableModeRealign", "Tableize" },
   keys = {
-    { "<leader>tm", "<cmd>TableModeToggle<cr>", desc = "Toggle table mode" },
-    { "<leader>tr", "<cmd>TableModeRealign<cr>", desc = "Realign table" },
+    { "<localleader>tm", "<cmd>TableModeToggle<cr>", desc = "Toggle table mode" },
+    { "<localleader>tr", "<cmd>TableModeRealign<cr>", desc = "Realign table" },
   },
   init = function()
     -- use standard markdown pipe-table syntax instead of the plugin's
