@@ -19,10 +19,12 @@ return {
     "python", "lua", "latex", "vim", "vimdoc", "html",
     "css", "javascript", "markdown", "c", "cpp", "regex", "bash"
   }):wait(300000)
-
   vim.api.nvim_create_autocmd("FileType", {
     callback = function(args)
       local ft = args.match
+      if ft == "tex" or ft == "plaintex" then
+        return  -- let vimtex handle tex/plaintex highlighting instead
+      end
       local lang = vim.treesitter.language.get_lang(ft) or ft
       pcall(vim.treesitter.start, args.buf, lang)
     end,

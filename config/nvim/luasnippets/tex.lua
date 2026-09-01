@@ -125,6 +125,23 @@ return {
   -- Derivatives
   s("@pd", { t("\\partial") }),
 
+  -- Small gap
+  s("skips", {
+    t({
+      "\\smallskip{}",
+      "\\newline{}",
+      "\\smallskip{}",
+    }),
+  }),
+
+  -- Large gap
+  s("skipl", {
+    t({
+      "\\bigskip{}",
+      "\\newline{}",
+      "\\bigskip{}",
+    }),
+  }),
   -- Greek letters
   s("@a", { t("\\alpha") }),
   s("@b", { t("\\beta") }),

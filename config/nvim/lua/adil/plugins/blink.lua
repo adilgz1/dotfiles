@@ -1,13 +1,10 @@
 return {
   'saghen/blink.cmp',
-  -- optional: provides snippets for the snippet source
-  dependencies = { 'rafamadriz/friendly-snippets' },
-  -- use a release tag to download pre-built binaries
+  dependencies = {
+    'rafamadriz/friendly-snippets',
+    'L3MON4D3/LuaSnip',  -- add LuaSnip as an actual dependency
+  },
   version = '1.*',
-  -- AND/OR build from source
-  -- build = 'cargo build --release',
-  -- If you use nix, you can build from source with:
-  -- build = 'nix run .#build-plugin',
   opts = {
     keymap = {
       preset = "enter",
@@ -25,17 +22,17 @@ return {
       list = { selection = { preselect = false, auto_insert = false } },
     },
     signature = { enabled = true },
+    snippets = { preset = 'luasnip' },  -- bridge blink → luasnip
     sources = {
       default = { 'lsp', 'path', 'snippets', 'buffer' },
       per_filetype = {
         sql = { 'omni', 'buffer' },
         mysql = { 'omni', 'buffer' },
         plsql = { 'omni', 'buffer' },
+        tex = { 'lsp', 'path', 'snippets', 'buffer', 'omni' },  -- add vimtex's omnifunc for tex
       },
       providers = {
         omni = {
-          -- omni completion (used by dadbod-completion) can be slow/blocking,
-          -- so let it run async and don't let it crowd out other results
           async = true,
           score_offset = -3,
         },
@@ -43,5 +40,9 @@ return {
     },
     fuzzy = { implementation = "prefer_rust_with_warning" }
   },
-  opts_extend = { "sources.default" }
+  opts_extend = { "sources.default" },
+  config = function(_, opts)
+    require("luasnip.loaders.from_lua").load({ paths = "./luasnippets" })
+    require("blink.cmp").setup(opts)
+  end,
 }

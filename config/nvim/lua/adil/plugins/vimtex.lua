@@ -1,30 +1,8 @@
--- VimTeX: plugin and configs
 return {
   "lervag/vimtex",
   lazy = false,
-  init = function()
-    if vim.fn.has("mac") == 1 then
-      vim.g.vimtex_view_method = "general"
-      vim.g.vimtex_view_general_viewer = "displayline"
-      vim.g.vimtex_view_general_options = "-r @line @pdf @tex"
-    else
-      vim.g.vimtex_view_method = "zathura"
-    end
+  config = function()
+    vim.g.vimtex_view_method = os.getenv("VIMTEX_VIEWER") or "zathura"
     vim.g.vimtex_compiler_method = "latexmk"
-    vim.g.vimtex_compiler_latexmk = {
-      build_dir = "",
-      callback = 1,
-      continuous = 1,
-      executable = "latexmk",
-      options = {
-        "-pdf",
-        "-pdflatex=pdflatex",
-        "-verbose",
-        "-file-line-error",
-        "-synctex=1",
-        "-interaction=nonstopmode",
-      },
-    }
-    vim.g.vimtex_quickfix_mode = 0
   end,
 }
