@@ -31,3 +31,5 @@ return {
     "rcarriga/nvim-notify",
   }
 }
+
+
