@@ -9,6 +9,20 @@
 #   Navigation:   zoxide, fzf, fd
 #   CLI tools:    eza, bat, nvim, ripgrep
 #   Node:         nvm
+#
+# =========================================================
+# For commands that differ between MacOS and Linux
+# =========================================================
+case "$(uname)" in
+  Darwin)
+    export VIMTEX_VIEWER="skim"
+    SED_INPLACE=(-i '')
+    ;;
+  Linux)
+    export VIMTEX_VIEWER="zathura"
+    SED_INPLACE=(-i)
+    ;;
+esac
 
 # =========================================================
 # History
@@ -115,6 +129,49 @@ function y() {
 	[ "$cwd" != "$PWD" ] && [ -d "$cwd" ] && builtin cd -- "$cwd"
 	rm -f -- "$tmp"
 }
+
+## shell command to create new latex file from template
+newtex() {
+  if [ -z "$1" ] || [ -z "$2" ]; then
+    echo "Usage: newtex <template-name> <new-file.tex> [title]"
+    echo "Available templates:"
+    ls ~/latex/templates/*.tex | xargs -n1 basename
+    return 1
+  fi
+
+  local template="$HOME/latex/templates/$1.tex"
+  local target="$2"
+  local title="$3"
+
+  if [ ! -f "$template" ]; then
+    echo "Template '$1' not found."
+    return 1
+  fi
+
+  if [ -f "$target" ]; then
+    echo "File '$target' already exists. Aborting."
+    return 1
+  fi
+
+  ## auto subtitute the string 'TITLE' in the latex template with the third argument of newtex
+  ## e.g newtex worksheet algebra_hw3.tex "Algebra Homework 3"
+  cp "$template" "$target"
+  [ -n "$title" ] && sed "${SED_INPLACE[@]}" "s/TITLE/$title/" "$target"
+  ### opens the new file in nvim
+  #nvim "$target"
+}
+
+## setting up autocomplete for template names
+_newtex_templates() {
+  local -a templates
+  templates=(${(f)"$(ls ~/latex/templates/*.tex 2>/dev/null | xargs -n1 basename | sed 's/\.tex$//')"})
+  _describe 'template' templates
+}
+
+compdef _newtex_templates newtex
+
+
+
 ## source tmux aliases file in tmux config folder
 source ~/.config/tmux/aliases.sh
 export PATH="$HOME/.local/bin:$PATH"
