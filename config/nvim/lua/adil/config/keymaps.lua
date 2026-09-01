@@ -1,6 +1,6 @@
 -- Set leader key to space
 vim.g.mapleader = " "
-
+vim.g.maplocalleader = " "
 local keymap = vim.keymap
 -- "s" is not working for substitute. no clue why. force adding it until i can figure out why it doesnt work
 
