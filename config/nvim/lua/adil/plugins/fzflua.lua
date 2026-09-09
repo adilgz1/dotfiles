@@ -7,8 +7,19 @@ return {
   ---@module "fzf-lua"
   ---@type fzf-lua.Config|{}
   ---@diagnostic disable: missing-fields
-  opts = {},
   ---@diagnostic enable: missing-fields
+  opts = {
+    previewers = {
+      builtin = {
+        extensions = {
+          ["pdf"] = { "chafa" },
+        },
+        chafa = {
+          format = "symbols",
+        },
+      },
+    },
+  },
   keys = {
     {
      "<leader>ff",
