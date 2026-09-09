@@ -35,3 +35,37 @@ vim.api.nvim_create_autocmd("FileType", {
     vim.bo.omnifunc = "vim_dadbod_completion#omni"
   end,
 })
+
+-- using skim to open pdfs on macos and zathura on linux
+vim.api.nvim_create_autocmd("BufReadCmd", {
+  pattern = "*.pdf",
+  callback = function(args)
+    local cmd
+    if vim.fn.has("mac") == 1 then
+      cmd = { "open", "-a", "Skim", args.file }
+    elseif vim.fn.has("unix") == 1 then
+      cmd = { "zathura", args.file }
+    else
+      vim.notify("No PDF opener configured for this OS", vim.log.levels.WARN)
+      return
+    end
+
+    vim.fn.jobstart(cmd, { detach = true })
+    vim.schedule(function()
+      vim.cmd("bwipeout! " .. args.buf)
+    end)
+  end,
+})
+
+
+-- creating new entries for days in journal files
+require("adil.journal").setup({
+  entry_lines = function(date_str)
+    return {
+      "",
+      "## " .. date_str .. " (" .. os.date("%A") .. ")",
+      "",
+      "- ",
+    }
+  end,
+})
