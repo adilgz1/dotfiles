@@ -1,14 +1,13 @@
 local M = {}
 
 M.config = {
-  marker = "<!journal>",   -- Lua pattern matching your marker line
+  marker = "<!%-%- journal %-%->",
   date_format = "%Y-%m-%d",                 -- used both to check + to write the heading
   entry_lines = function(date_str)
     -- Customize this: whatever lines you want a new entry to look like
     return {
       "",
       "## " .. date_str,
-      "",
       "- ",
     }
   end,
