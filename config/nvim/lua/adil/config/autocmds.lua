@@ -64,7 +64,6 @@ require("adil.journal").setup({
     return {
       "",
       "## " .. date_str .. " (" .. os.date("%A") .. ")",
-      "",
       "- ",
     }
   end,
