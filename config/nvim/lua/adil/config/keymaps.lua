@@ -53,7 +53,7 @@ keymap.set("n", "<leader>ww", ":w<CR>", { desc = "save" })
 -- save and quit
 keymap.set("n", "<leader>wq", ":wq<CR>", { desc = "save and quit" })
 
--- force quit
+-- force quit completely
 keymap.set("n", "<leader>qq", ":qa!<CR>", { desc = "force quit" })
 
 -- clear search highlights
