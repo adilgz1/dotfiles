@@ -72,6 +72,7 @@ keymap.set("n", "<leader>tp", "<cmd>tabp<CR>", { desc = "Go to previous tab" }) 
 keymap.set("n", "<leader>tf", "<cmd>tabnew %<CR>", { desc = "Open current buffer in new tab" }) --  move current buffer to new tab
 
 
-
-
+-- changing substitute bindings to allow for better flash.nvim binds
+vim.keymap.set({ "n", "x" }, "<leader>s", "s", { desc = "Substitute character" })
+vim.keymap.set({ "n", "x" }, "<leader>S", "S", { desc = "Substitute line" })
 
