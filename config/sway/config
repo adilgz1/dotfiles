@@ -43,6 +43,13 @@ floating_modifier $mod normal
 # Run `swaymsg -t get_outputs` to confirm the actual output name Sway assigns
 # (it may not be literally "DP-3" — Wayland output naming can differ from X11's).
 #
+
+# mouse sensitivity: pointer speed and 0 acceleration
+input type:pointer {
+    pointer_accel 0.2
+    accel_profile "flat"
+}
+
 # Try native 240Hz first:
 output DP-3 resolution 2560x1440@240Hz position 0,0
 #
